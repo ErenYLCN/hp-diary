@@ -4,11 +4,18 @@
   "main": "index.js",
   "scripts": {
     "dev:client": "cd client && npm run dev",
-    "install:all": "npm install && cd client && npm install",
-    "install:client": "cd client && npm install"
+    "dev:server": "cd server && npm run dev",
+    "build:server": "cd server && npm run build",
+    "start:server": "cd server && npm run start",
+    "install:all": "npm install && cd client && npm install && cd ../server && npm install",
+    "install:client": "cd client && npm install",
+    "install:server": "cd server && npm install",
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
 }
