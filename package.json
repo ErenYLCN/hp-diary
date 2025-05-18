@@ -16,10 +16,6 @@
     "prepare": "husky",
     "lint-staged": "lint-staged"
   },
-  "lint-staged": {
-    "client/**/*.{js,jsx,ts,tsx}": ["cd client && npm run lint"],
-    "server/**/*.{js,ts}": ["cd server && npm run lint"]
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
