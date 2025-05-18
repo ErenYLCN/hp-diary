@@ -10,12 +10,22 @@
     "install:all": "npm install && cd client && npm install && cd ../server && npm install",
     "install:client": "cd client && npm install",
     "install:server": "cd server && npm install",
-    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\""
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "lint": "cd client && npm run lint && cd ../server && npm run lint",
+    "lint:fix": "cd client && npm run lint:fix && cd ../server && npm run lint:fix",
+    "prepare": "husky",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "client/**/*.{js,jsx,ts,tsx}": ["cd client && npm run lint"],
+    "server/**/*.{js,ts}": ["cd server && npm run lint"]
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.2"
   }
 }
