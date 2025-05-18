@@ -1,11 +1,11 @@
 import express, { Request, Response } from "express";
-import { DB_USERNAME, DB_PASSWORD } from "./config/env";
+import { PORT, DB_USERNAME, DB_PASSWORD } from "./config/env";
 import mongoose from "mongoose";
 
 const app = express();
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 
 app.get("/", (_: Request, res: Response) => {
