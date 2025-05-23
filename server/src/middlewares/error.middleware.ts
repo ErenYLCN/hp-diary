@@ -1,20 +1,9 @@
 import { NextFunction, Request, Response } from "express";
+import AppError from "../utils/app-error";
 
-interface ErrorWithStatus extends Error {
-  statusCode?: number;
-  code?: number;
-  errors?: Record<string, { message: string }>;
-  reason?: {
-    value?: string;
-    path?: string;
-    kind?: string;
-  };
-}
-
-const errorMiddleware = (err: ErrorWithStatus, req: Request, res: Response, next: NextFunction) => {
+const errorMiddleware = (err: Error | AppError, req: Request, res: Response, next: NextFunction) => {
   try {
-    let error = { ...err };
-
+    let error = { ...err } as AppError;
     error.message = err.message;
 
     console.error(err);
@@ -22,28 +11,27 @@ const errorMiddleware = (err: ErrorWithStatus, req: Request, res: Response, next
     // Mongoose bad ObjectId
     if (err.name === "CastError") {
       const message = "Resource not found";
-
-      error = new Error(message);
-      error.statusCode = 404;
+      error = new AppError(message, 404);
     }
 
     // Mongoose duplicate key
-    if (err.code === 11000) {
+    if ("code" in err && err.code === 11000) {
       const message = "Duplicate field value entered";
-      error = new Error(message);
-      error.statusCode = 400;
+      error = new AppError(message, 400);
     }
 
     //Mongoose validation error
-    if (err.name === "ValidationError" && err.errors) {
-      const message = Object.values(err.errors)
+    if (err.name === "ValidationError" && "errors" in err) {
+      const message = Object.values(err.errors as Record<string, { message: string }>)
         .map((val: { message: string }) => val.message)
         .join(", ");
-      error = new Error(message);
-      error.statusCode = 400;
+      error = new AppError(message, 400);
     }
 
-    res.status(error.statusCode || 500).json({ success: false, message: error.message || "Server Error" });
+    res.status((error as AppError).statusCode || 500).json({
+      success: false,
+      message: error.message || "Server Error",
+    });
   } catch (error) {
     next(error);
   }
