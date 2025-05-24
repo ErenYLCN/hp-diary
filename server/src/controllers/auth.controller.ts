@@ -13,10 +13,6 @@ export const signUp = async (req: Request, res: Response, next: NextFunction) =>
   try {
     const { email, password, name } = req.body;
 
-    console.log("email", email);
-    console.log("password", password);
-    console.log("name", name);
-
     // Password validation
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
     if (!passwordRegex.test(password)) {
