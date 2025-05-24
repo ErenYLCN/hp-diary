@@ -4,7 +4,7 @@ import User from "../models/user.model";
 import AppError from "../utils/app-error";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../config/env";
+import { JWT_EXPIRES, JWT_SECRET } from "../config/env";
 
 export const signUp = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const session = await mongoose.startSession();
@@ -30,7 +30,7 @@ export const signUp = async (req: Request, res: Response, next: NextFunction): P
 
     const newUsers = await User.create([{ name, email, password: hashedPassword, authMethods: { local: true, google: false } }], { session });
 
-    const token = jwt.sign({ userId: newUsers[0]._id }, JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ userId: newUsers[0]._id }, JWT_SECRET, { expiresIn: JWT_EXPIRES });
 
     res.status(201).json({
       success: true,
@@ -65,7 +65,7 @@ export const signIn = async (req: Request, res: Response, next: NextFunction): P
       throw new AppError("Invalid email or password", 401);
     }
 
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRES });
     res.status(200).json({
       success: true,
       message: "User signed in successfully",
