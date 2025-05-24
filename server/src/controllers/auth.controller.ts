@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
 import { NextFunction, Request, Response } from "express";
 import User from "../models/user.model";
+import Session from "../models/session.model";
 import AppError from "../utils/app-error";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { JWT_EXPIRES, JWT_SECRET } from "../config/env";
+import { NODE_ENV } from "../config/env";
+import { IUser } from "../types/express";
+import { generateAccessToken, generateRefreshToken, getRefreshTokenExpiry, getCookieOptions } from "../utils/token.utils";
 
 export const signUp = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const session = await mongoose.startSession();
@@ -13,7 +15,6 @@ export const signUp = async (req: Request, res: Response, next: NextFunction): P
   try {
     const { email, password, name } = req.body;
 
-    // Password validation
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
     if (!passwordRegex.test(password)) {
       throw new AppError("Password must be 8-20 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character (@$!%*?&)", 400);
@@ -30,14 +31,32 @@ export const signUp = async (req: Request, res: Response, next: NextFunction): P
 
     const newUsers = await User.create([{ name, email, password: hashedPassword, authMethods: { local: true, google: false } }], { session });
 
-    const token = jwt.sign({ userId: newUsers[0]._id }, JWT_SECRET, { expiresIn: JWT_EXPIRES });
+    const accessToken = generateAccessToken(newUsers[0]._id);
+    const refreshToken = generateRefreshToken();
+    const expiresAt = getRefreshTokenExpiry();
+
+    await Session.create(
+      [
+        {
+          userId: newUsers[0]._id,
+          refreshToken,
+          userAgent: req.get("User-Agent"),
+          ipAddress: req.ip,
+          expiresAt,
+        },
+      ],
+      { session }
+    );
+
+    const cookieOptions = getCookieOptions(NODE_ENV === "production");
+    res.cookie("refreshToken", refreshToken, cookieOptions);
 
     res.status(201).json({
       success: true,
       message: "User created successfully",
       data: {
         user: newUsers[0],
-        token,
+        accessToken,
       },
     });
 
@@ -65,13 +84,27 @@ export const signIn = async (req: Request, res: Response, next: NextFunction): P
       throw new AppError("Invalid email or password", 401);
     }
 
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRES });
+    const accessToken = generateAccessToken(user._id);
+    const refreshToken = generateRefreshToken();
+    const expiresAt = getRefreshTokenExpiry();
+
+    await Session.create({
+      userId: user._id,
+      refreshToken,
+      userAgent: req.get("User-Agent"),
+      ipAddress: req.ip,
+      expiresAt,
+    });
+
+    const cookieOptions = getCookieOptions(NODE_ENV === "production");
+    res.cookie("refreshToken", refreshToken, cookieOptions);
+
     res.status(200).json({
       success: true,
       message: "User signed in successfully",
       data: {
         user,
-        token,
+        accessToken,
       },
     });
   } catch (error) {
@@ -81,10 +114,73 @@ export const signIn = async (req: Request, res: Response, next: NextFunction): P
 
 export const signOut = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    // TODO: Implement sign out logic
+    const refreshToken = req.cookies.refreshToken;
+
+    if (refreshToken) {
+      await Session.findOneAndUpdate({ refreshToken }, { isValid: false });
+    }
+
+    res.clearCookie("refreshToken");
     res.status(200).json({
       success: true,
       message: "User signed out successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const refreshToken = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+      throw new AppError("Refresh token not provided", 401);
+    }
+
+    const session = await Session.findOne({
+      refreshToken,
+      isValid: true,
+      expiresAt: { $gt: new Date() },
+    }).populate("userId");
+
+    if (!session || !session.userId) {
+      throw new AppError("Invalid or expired refresh token", 401);
+    }
+
+    await Session.findByIdAndUpdate(session._id, {
+      lastUsedAt: new Date(),
+    });
+
+    const user = session.userId as unknown as IUser;
+    const newAccessToken = generateAccessToken(user._id);
+
+    res.status(200).json({
+      success: true,
+      message: "Token refreshed successfully",
+      data: {
+        accessToken: newAccessToken,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const revokeAllTokens = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const userId = req.user?._id;
+
+    if (!userId) {
+      throw new AppError("User not authenticated", 401);
+    }
+
+    await Session.updateMany({ userId, isValid: true }, { isValid: false });
+
+    res.clearCookie("refreshToken");
+    res.status(200).json({
+      success: true,
+      message: "All tokens revoked successfully",
     });
   } catch (error) {
     next(error);

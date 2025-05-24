@@ -1,12 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { JWT_SECRET } from "../config/env";
-import jwt from "jsonwebtoken";
 import User from "../models/user.model";
 import { IUser } from "../types/express";
+import { verifyAccessToken } from "../utils/token.utils";
 
 const authMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  console.log(req, res, next);
-
   try {
     let token;
 
@@ -22,7 +19,7 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction): 
       return;
     }
 
-    const decoded = jwt.verify(token, JWT_SECRET as string);
+    const decoded = verifyAccessToken(token);
 
     const user = await User.findById((decoded as { userId: string }).userId).select("-password -__v");
 
