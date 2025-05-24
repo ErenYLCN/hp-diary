@@ -1,0 +1,51 @@
+import { Request, Response, NextFunction } from "express";
+import { JWT_SECRET } from "../config/env";
+import jwt from "jsonwebtoken";
+import User from "../models/user.model";
+import { IUser } from "../types/express";
+
+const authMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  console.log(req, res, next);
+
+  try {
+    let token;
+
+    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+      token = req.headers.authorization.split(" ")[1];
+    }
+
+    if (!token) {
+      res.status(401).json({
+        success: false,
+        message: "Unauthorized access, no token provided",
+      });
+      return;
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET as string);
+
+    const user = await User.findById((decoded as { userId: string }).userId).select("-password -__v");
+
+    if (!user) {
+      res.status(401).json({
+        success: false,
+        message: "User not found",
+      });
+
+      return;
+    }
+
+    req.user = user as IUser;
+
+    next();
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An error occurred";
+    res.status(401).json({
+      success: false,
+      message: "Unauthorized access",
+      error: errorMessage,
+    });
+  }
+};
+
+export default authMiddleware;

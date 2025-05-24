@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import AppError from "../utils/app-error";
 
-const errorMiddleware = (err: Error | AppError, req: Request, res: Response, next: NextFunction) => {
+const errorMiddleware = (err: Error | AppError, req: Request, res: Response, next: NextFunction): void => {
   try {
     let error = { ...err } as AppError;
     error.message = err.message;

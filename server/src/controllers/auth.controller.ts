@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config/env";
 
-export const signUp = async (req: Request, res: Response, next: NextFunction) => {
+export const signUp = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -50,7 +50,7 @@ export const signUp = async (req: Request, res: Response, next: NextFunction) =>
   }
 };
 
-export const signIn = async (req: Request, res: Response, next: NextFunction) => {
+export const signIn = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { email, password } = req.body;
 
@@ -79,7 +79,7 @@ export const signIn = async (req: Request, res: Response, next: NextFunction) =>
   }
 };
 
-export const signOut = async (req: Request, res: Response, next: NextFunction) => {
+export const signOut = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     // TODO: Implement sign out logic
     res.status(200).json({
