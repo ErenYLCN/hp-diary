@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { PORT } from "./config/env";
 import userRouter from "./routes/user.routes";
 import authRouter from "./routes/auth.routes";
@@ -8,6 +9,16 @@ import cookieParser from "cookie-parser";
 
 // Initialize express app
 const app = express();
+
+// CORS configuration
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Allow your frontend
+    credentials: true, // Allow cookies to be sent
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 // Middleware
 app.use(express.json());
