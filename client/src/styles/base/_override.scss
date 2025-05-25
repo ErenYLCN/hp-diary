@@ -1,0 +1,174 @@
+/* ==========================================================================
+   Base Overrides
+   ========================================================================== */
+
+/* Box sizing border-box for all elements */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margin and padding */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove list styles */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Remove default link styling */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Remove button styling */
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* Remove input styling */
+input,
+textarea,
+select {
+  border: none;
+  outline: none;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* Remove fieldset styling */
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove legend styling */
+legend {
+  padding: 0;
+}
+
+/* Remove table styling */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th {
+  padding: 0;
+  text-align: left;
+}
+
+/* Remove img border in IE 8/9/10 */
+img {
+  border: 0;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Remove focus outline for non-keyboard users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Improve text rendering */
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent horizontal scrolling */
+html,
+body {
+  overflow-x: hidden;
+}
+
+/* Remove default blockquote styling */
+blockquote {
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove default figure styling */
+figure {
+  margin: 0;
+}
+
+/* Remove default hr styling */
+hr {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove default abbr styling */
+abbr {
+  text-decoration: none;
+}
+
+/* Remove default address styling */
+address {
+  font-style: normal;
+}
+
+/* Remove default cite styling */
+cite {
+  font-style: normal;
+}
+
+/* Remove default dfn styling */
+dfn {
+  font-style: normal;
+}
+
+/* Remove default em styling */
+em {
+  font-style: normal;
+}
+
+/* Remove default i styling */
+i {
+  font-style: normal;
+}
+
+/* Remove default small styling */
+small {
+  font-size: inherit;
+}
+
+/* Remove default strong styling */
+strong {
+  font-weight: inherit;
+}
+
+/* Remove default sub and sup styling */
+sub,
+sup {
+  font-size: inherit;
+  line-height: inherit;
+  position: static;
+  vertical-align: baseline;
+}

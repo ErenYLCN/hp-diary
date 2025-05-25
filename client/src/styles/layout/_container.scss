@@ -1,0 +1,87 @@
+/* ==========================================================================
+   Layout Container Styles
+   ========================================================================== */
+
+.container {
+  width: 100%;
+  max-width: var(--breakpoint-xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-4);
+
+  @include tablet-up {
+    padding: 0 var(--spacing-6);
+  }
+
+  @include desktop-up {
+    padding: 0 var(--spacing-8);
+  }
+
+  // Container sizes
+  &--sm {
+    max-width: var(--breakpoint-sm);
+  }
+
+  &--md {
+    max-width: var(--breakpoint-md);
+  }
+
+  &--lg {
+    max-width: var(--breakpoint-lg);
+  }
+
+  &--xl {
+    max-width: var(--breakpoint-xl);
+  }
+
+  &--2xl {
+    max-width: var(--breakpoint-2xl);
+  }
+
+  &--fluid {
+    max-width: none;
+  }
+}
+
+// Main layout wrapper
+.main-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+}
+
+// Section spacing
+.section {
+  padding: var(--spacing-16) 0;
+
+  @include tablet-up {
+    padding: var(--spacing-20) 0;
+  }
+
+  @include desktop-up {
+    padding: var(--spacing-24) 0;
+  }
+
+  &--sm {
+    padding: var(--spacing-8) 0;
+
+    @include tablet-up {
+      padding: var(--spacing-12) 0;
+    }
+  }
+
+  &--lg {
+    padding: var(--spacing-20) 0;
+
+    @include tablet-up {
+      padding: var(--spacing-24) 0;
+    }
+
+    @include desktop-up {
+      padding: var(--spacing-32) 0;
+    }
+  }
+}

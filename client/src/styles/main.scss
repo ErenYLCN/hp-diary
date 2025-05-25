@@ -1,0 +1,35 @@
+/* ==========================================================================
+   Main Stylesheet
+   ========================================================================== */
+
+// 1. Abstracts
+@import "abstracts/variables";
+@import "abstracts/mixins";
+
+// 2. Base
+@import "base/override";
+@import "base/typography";
+@import "base/utilities";
+
+// 3. Layout
+@import "layout/container";
+// @import 'layout/header';
+// @import 'layout/footer';
+// @import 'layout/navigation';
+// @import 'layout/sidebar';
+// @import 'layout/grid';
+
+// 4. Components
+@import "components/button";
+@import "components/form";
+// @import 'components/cards';
+// @import 'components/modals';
+
+// 5. Pages
+// @import 'pages/home';
+// @import 'pages/about';
+// @import 'pages/contact';
+
+// 6. Vendors (third-party styles)
+// @import 'vendors/normalize';
+// @import 'vendors/bootstrap';
