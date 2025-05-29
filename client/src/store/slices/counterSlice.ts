@@ -24,8 +24,11 @@ const counterSlice = createSlice({
     reset: (state) => {
       state.value = 0;
     },
+    asyncIncrementRequest: () => {
+      // This action will trigger the saga
+    },
   },
 });
 
-export const { increment, decrement, incrementByAmount, reset } = counterSlice.actions;
+export const { increment, decrement, incrementByAmount, reset, asyncIncrementRequest } = counterSlice.actions;
 export default counterSlice.reducer;

@@ -3,7 +3,7 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import api from "./services/api";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
-import { increment } from "./store/slices/counterSlice";
+import { increment, decrement, incrementByAmount, reset, asyncIncrementRequest } from "./store/slices/counterSlice";
 
 function App() {
   const count = useAppSelector((state) => state.counter.value);
@@ -35,9 +35,39 @@ function App() {
               </div>
               <h1 className="mb-8">Vite + React</h1>
               <div className="bg-white p-8 rounded-lg shadow-md mb-8">
-                <button className="btn btn--primary mb-4" onClick={() => dispatch(increment())}>
-                  count is {count}
-                </button>
+                <div className="mb-6">
+                  <h2 className="text-xl font-bold mb-4">Counter: {count}</h2>
+                </div>
+
+                <div className="d-flex flex-column gap-3 mb-4">
+                  <div className="d-flex gap-2 justify-center">
+                    <button className="btn btn--primary" onClick={() => dispatch(increment())}>
+                      Increment (+1)
+                    </button>
+                    <button className="btn btn--secondary" onClick={() => dispatch(decrement())}>
+                      Decrement (-1)
+                    </button>
+                  </div>
+
+                  <div className="d-flex gap-2 justify-center">
+                    <button className="btn btn--primary" onClick={() => dispatch(incrementByAmount(5))}>
+                      Increment by 5
+                    </button>
+                    <button className="btn btn--primary" onClick={() => dispatch(incrementByAmount(10))}>
+                      Increment by 10
+                    </button>
+                  </div>
+
+                  <div className="d-flex gap-2 justify-center">
+                    <button className="btn btn--info" onClick={() => dispatch(asyncIncrementRequest())}>
+                      Async Increment (1s delay)
+                    </button>
+                    <button className="btn btn--danger" onClick={() => dispatch(reset())}>
+                      Reset to 0
+                    </button>
+                  </div>
+                </div>
+
                 <p className="text-secondary">
                   Edit <code>src/App.tsx</code> and save to test HMR
                 </p>
