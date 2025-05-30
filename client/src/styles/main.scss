@@ -3,33 +3,33 @@
    ========================================================================== */
 
 // 1. Abstracts
-@import "abstracts/variables";
-@import "abstracts/mixins";
+@use "abstracts/variables";
+@use "abstracts/mixins";
 
 // 2. Base
-@import "base/override";
-@import "base/typography";
-@import "base/utilities";
+@use "base/override";
+@use "base/typography";
+@use "base/utilities";
 
 // 3. Layout
-@import "layout/container";
-// @import 'layout/header';
-// @import 'layout/footer';
-// @import 'layout/navigation';
-// @import 'layout/sidebar';
-// @import 'layout/grid';
+@use "layout/container";
+// @use 'layout/header';
+// @use 'layout/footer';
+// @use 'layout/navigation';
+// @use 'layout/sidebar';
+// @use 'layout/grid';
 
 // 4. Components
-@import "components/button";
-@import "components/form";
-// @import 'components/cards';
-// @import 'components/modals';
+@use "components/button";
+@use "components/form";
+// @use 'components/cards';
+// @use 'components/modals';
 
 // 5. Pages
-// @import 'pages/home';
-// @import 'pages/about';
-// @import 'pages/contact';
+// @use 'pages/home';
+// @use 'pages/about';
+// @use 'pages/contact';
 
 // 6. Vendors (third-party styles)
-// @import 'vendors/normalize';
-// @import 'vendors/bootstrap';
+// @use 'vendors/normalize';
+// @use 'vendors/bootstrap';

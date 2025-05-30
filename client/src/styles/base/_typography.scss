@@ -1,3 +1,5 @@
+@use "../abstracts/mixins";
+
 /* ==========================================================================
    Base Typography
    ========================================================================== */
@@ -31,7 +33,7 @@ h6 {
 h1 {
   font-size: var(--font-size-4xl);
 
-  @include tablet-up {
+  @include mixins.tablet-up {
     font-size: var(--font-size-5xl);
   }
 }
@@ -39,7 +41,7 @@ h1 {
 h2 {
   font-size: var(--font-size-3xl);
 
-  @include tablet-up {
+  @include mixins.tablet-up {
     font-size: var(--font-size-4xl);
   }
 }
@@ -47,7 +49,7 @@ h2 {
 h3 {
   font-size: var(--font-size-2xl);
 
-  @include tablet-up {
+  @include mixins.tablet-up {
     font-size: var(--font-size-3xl);
   }
 }
@@ -55,7 +57,7 @@ h3 {
 h4 {
   font-size: var(--font-size-xl);
 
-  @include tablet-up {
+  @include mixins.tablet-up {
     font-size: var(--font-size-2xl);
   }
 }
@@ -63,7 +65,7 @@ h4 {
 h5 {
   font-size: var(--font-size-lg);
 
-  @include tablet-up {
+  @include mixins.tablet-up {
     font-size: var(--font-size-xl);
   }
 }
@@ -71,7 +73,7 @@ h5 {
 h6 {
   font-size: var(--font-size-base);
 
-  @include tablet-up {
+  @include mixins.tablet-up {
     font-size: var(--font-size-lg);
   }
 }
@@ -89,14 +91,14 @@ p {
 // Links
 a {
   color: var(--color-primary);
-  @include transition(color);
+  @include mixins.transition(color);
 
   &:hover,
   &:focus {
     color: var(--color-primary-dark);
   }
 
-  @include focus-visible;
+  @include mixins.focus-visible;
 }
 
 // Lists

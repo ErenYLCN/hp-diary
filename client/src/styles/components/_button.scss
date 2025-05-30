@@ -1,11 +1,13 @@
+@use "../abstracts/mixins";
+
 /* ==========================================================================
    Button Component Styles
    ========================================================================== */
 
 .btn {
-  @include button-reset;
-  @include transition(all);
-  @include focus-visible;
+  @include mixins.button-reset;
+  @include mixins.transition(all);
+  @include mixins.focus-visible;
   
   display: inline-flex;
   align-items: center;

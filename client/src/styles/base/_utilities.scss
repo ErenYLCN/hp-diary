@@ -1,3 +1,5 @@
+@use "../abstracts/mixins";
+
 /* ==========================================================================
    Utility Classes
    ========================================================================== */
@@ -197,7 +199,7 @@
 }
 
 .text-truncate {
-  @include text-truncate;
+  @include mixins.text-truncate;
 }
 
 // Spacing utilities
@@ -426,7 +428,7 @@
 
 // Screen reader only
 .sr-only {
-  @include sr-only;
+  @include mixins.sr-only;
 }
 
 // Overflow utilities
